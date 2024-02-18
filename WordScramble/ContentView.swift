@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var usedWords = [String]()
     @State private var rootWord = ""
     @State private var newWord = ""
+    @State private var score = 0
     
     @State private var errorTitle = ""
     @State private var errorMessage = ""
@@ -41,6 +42,13 @@ struct ContentView: View {
             } message: {
                 Text(errorMessage)
             }
+            .toolbar {
+                Button("Restart") {
+                    startGame()
+                }
+            }
+            Text("Score: \(score)")
+                .font(.largeTitle)
         }
     }
     
@@ -74,6 +82,8 @@ struct ContentView: View {
             return
         }
         
+        score += answer.count
+        
         withAnimation {
             usedWords.insert(answer, at: 0)
             newWord = ""
@@ -85,6 +95,8 @@ struct ContentView: View {
             if let startWords = try? String(contentsOf: startWordsURL) {
                 let allWords = startWords.components(separatedBy: "\n")
                 rootWord = allWords.randomElement() ?? "silkworm"
+                score = 0
+                usedWords = [String]()
                 return
             }
         }
