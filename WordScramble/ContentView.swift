@@ -64,6 +64,16 @@ struct ContentView: View {
             return
         }
         
+        guard is3orMore(word: answer) else {
+            wordError(title: "Word too short", message: "Words must be at least 3 letters long")
+            return
+        }
+        
+        guard isNotStartWord(word: answer) else {
+            wordError(title: "Using start word", message: "Not allowed to use the root word")
+            return
+        }
+        
         withAnimation {
             usedWords.insert(answer, at: 0)
             newWord = ""
@@ -111,6 +121,20 @@ struct ContentView: View {
         errorTitle = title
         errorMessage = message
         showingError = true
+    }
+    
+    func is3orMore(word: String) -> Bool {
+        if (word.count < 3) {
+            return false
+        }
+        return true
+    }
+    
+    func isNotStartWord(word: String) -> Bool {
+        if (word == rootWord) {
+            return false
+        }
+        return true
     }
 }
 
